@@ -44,4 +44,5 @@ void loop()                     // run over and over again
   ledValue = constrain(ledValue,0,255);
   Serial.println(ledValue);
   analogWrite(ledPin, ledValue);
+  delay(150);
 }
