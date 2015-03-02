@@ -1,5 +1,4 @@
 'use strict'
-
 var SerialPort = require("serialport").SerialPort;
 var parsers = require("serialport").parsers;
 
