@@ -22,7 +22,7 @@ var serialPort = new SerialPort("/dev/ttyACM" + sp, {
 });
 
 var buttonValue;
-// var comparitor = 0;
+var comparitor = 0;
 var parseIntData;
 
 io.on('connection', function(socket){
@@ -35,11 +35,11 @@ serialPort.on("open", function () {
         parseIntData = parseInt( data );
         if(typeof parseIntData === 'number' && parseIntData > -1 && parseIntData < 256){
             buttonValue = parseIntData;
-        //    if( buttonValue != comparitor ){
+            if( buttonValue != comparitor ){
                 console.log(''+ parseIntData);
                 io.sockets.emit('data', parseIntData);
-        //    };
-        //    comparitor = buttonValue;
+            };
+            comparitor = buttonValue;
         }; 
     });
 });

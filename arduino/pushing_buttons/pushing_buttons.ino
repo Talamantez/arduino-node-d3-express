@@ -48,6 +48,8 @@ void loop()                     // run over and over again
       Serial.println(ledValue);
       analogWrite(ledPin, ledValue);
       comparitor = ledValue;
+  } else {
+    continue();
   }
   delay(150);
 }
