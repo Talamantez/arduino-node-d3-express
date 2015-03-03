@@ -29,7 +29,7 @@ io.on('connection', function(socket){
 });
 
 serialPort.on("open", function () {
-    console.log('open');
+    console.log('opening serial port');
     serialPort.on('data', function( data ){
         parseIntData = parseInt( data );
         if(typeof parseIntData === 'number' && parseIntData > -1 && parseIntData < 256){
