@@ -19,12 +19,15 @@ var counter = 0;
 var svgContainer = d3.select( 'body' )
   .append( 'svg' )
   .attr( 'width', 400 )
-  .attr( 'height', 400 );
+  .attr( 'height', 400 );;
+
+drawCircle( data );
 
 socket.on( 'data', function( buttonValue ){
   
   console.log( buttonValue );
-  toggleCircle( buttonValue );
+  // toggleCircle( buttonValue );
+  replaceCircle( buttonValue );
 });
 
 function updateData( value ) {
@@ -39,15 +42,18 @@ function removeCircle(){
   var toRemove = d3.select( myCircle );
   console.dir( toRemove );
   toRemove.remove();
+  console.log( 'Removing: ' + toRemove );
 }
 function drawCircle( data ){
+
   var circles = svgContainer.selectAll( 'circle' )
     .data( data )
     .enter()
     .append( 'circle' )
     .attr( 'cx' , 200 )
     .attr( 'cy' , 200 )
-    .attr( 'r' , function(d){ return 20 * d } );  
+    .attr( 'r' , function(d){ return 20 * d } );
+  console.log('drawing circle');  
 }
 
 function toggleCircle( buttonValue ){
@@ -58,6 +64,16 @@ function toggleCircle( buttonValue ){
     removeCircle();
   }
   counter++;  
+}
+
+function replaceCircle( buttonValue ){
+  var promise = new Promise( function( resolve, reject ){
+    removeCircle();
+    resolve();
+  });
+
+  promise.then( drawCircle( [ buttonValue ] ) );;
+
 }
 </script>
 
