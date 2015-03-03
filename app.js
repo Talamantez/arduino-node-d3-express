@@ -7,6 +7,7 @@ var io = require('socket.io')(http);
 
 var port = process.env.PORT || 3000;
 
+var sp = process.argv[2] || "0"
 // Serve some static content
 app.use( express.static(__dirname + '/dist') );
 
@@ -15,7 +16,7 @@ app.use( express.static(__dirname + '/dist') );
 var SerialPort = require("serialport").SerialPort;
 var parsers = require("serialport").parsers;
 
-var serialPort = new SerialPort("/dev/ttyACM0", {
+var serialPort = new SerialPort("/dev/ttyACM" + sp, {
     baudrate: 9600,
     parser: parsers.readline("\n")
 });
