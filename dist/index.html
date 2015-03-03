@@ -24,13 +24,7 @@ var svgContainer = d3.select( 'body' )
 socket.on( 'data', function( buttonValue ){
   
   console.log( buttonValue );
-  console.log( counter % 2 );
-  if( counter % 2 === 0 ){
-    drawCircle( [ buttonValue ] );
-  } else {
-    removeCircle();
-  }
-  counter++;
+  toggleCircle( buttonValue );
 });
 
 function updateData( value ) {
@@ -56,6 +50,15 @@ function drawCircle( data ){
     .attr( 'r' , function(d){ return 20 * d } );  
 }
 
+function toggleCircle( buttonValue ){
+  console.log( counter % 2 );
+  if( counter % 2 === 0 ){
+    drawCircle( [ buttonValue ] );
+  } else {
+    removeCircle();
+  }
+  counter++;  
+}
 </script>
 
 </body>
