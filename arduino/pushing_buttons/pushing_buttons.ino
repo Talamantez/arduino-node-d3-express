@@ -43,13 +43,13 @@ void loop()                     // run over and over again
 {
   if(digitalRead(buttonOne) == LOW){ledValue++;}
   if(digitalRead(buttonTwo) == LOW){ledValue--;}
+  
   if( ledValue != comparitor ){
       ledValue = constrain(ledValue,0,255);
       Serial.println(ledValue);
       analogWrite(ledPin, ledValue);
       comparitor = ledValue;
-  } else {
-    continue();
   }
+  
   delay(150);
 }
