@@ -15,16 +15,21 @@
 var socket = io();
 var data = [ 3 ];
 var counter = 0;
+var containerWidth = 478;
+var containerHeight = 430;
+var cx = containerWidth/2;
+var cy = containerHeight/2;
+var currentRadius = 0;
+var scaleFactor = 20;
 
 var svgContainer = d3.select( 'body' )
   .append( 'svg' )
-  .attr( 'width', 400 )
-  .attr( 'height', 400 );;
+  .attr( 'width', containerWidth )
+  .attr( 'height', containerHeight );
 
 drawCircle( data );
 
 socket.on( 'data', function( buttonValue ){
-  
   console.log( buttonValue );
   // toggleCircle( buttonValue );
   replaceCircle( buttonValue );
@@ -45,14 +50,19 @@ function removeCircle(){
   console.log( 'Removing: ' + toRemove );
 }
 function drawCircle( data ){
-
+  console.log( 'current radius: ' + currentRadius );
   var circles = svgContainer.selectAll( 'circle' )
     .data( data )
     .enter()
     .append( 'circle' )
-    .attr( 'cx' , 200 )
-    .attr( 'cy' , 200 )
-    .attr( 'r' , function(d){ return 20 * d } );
+      .attr( 'cx' , cx )
+      .attr( 'cy' , cy )
+      .attr( 'r', currentRadius)
+    .transition()
+    .duration(200)
+      .attr( 'r' , function(d){ 
+        currentRadius = scaleFactor * d; 
+        return scaleFactor * d } );
   console.log('drawing circle');  
 }
 
