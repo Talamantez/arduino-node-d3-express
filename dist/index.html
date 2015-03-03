@@ -71,7 +71,7 @@ function drawCircle( data ){
       .attr( 'cy' , cy )
       .attr( 'r', currentRadius)
     .transition()
-    .duration(200)
+    .duration(160)
       .attr( 'r' , function(d){ 
         currentRadius = scaleFactor * d; 
         return scaleFactor * d } );
