@@ -17,6 +17,8 @@ int buttonTwo = 3; //The pin button one is attached to
 int ledPin = 9;  //The pin the LED is attached to
 int ledValue = 0; //The current illumination Level of the led (0 off 255 full on)
 
+int comparitor = 0;
+
 void setup()
 {
   pinMode(buttonOne, INPUT); digitalWrite(buttonOne, HIGH);  /* Sets the buttonOne pin to input and
@@ -41,8 +43,11 @@ void loop()                     // run over and over again
 {
   if(digitalRead(buttonOne) == LOW){ledValue++;}
   if(digitalRead(buttonTwo) == LOW){ledValue--;}
-  ledValue = constrain(ledValue,0,255);
-  Serial.println(ledValue);
-  analogWrite(ledPin, ledValue);
+  if( ledValue != comparitor ){
+      ledValue = constrain(ledValue,0,255);
+      Serial.println(ledValue);
+      analogWrite(ledPin, ledValue);
+      comparitor = ledValue;
+  }
   delay(150);
 }
