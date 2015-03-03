@@ -11,35 +11,45 @@
 <body>
 
 <script>
-
+// Initialize socket.io client
 var socket = io();
+// Initialize data array for D3
 var data = [ 3 ];
-var counter = 0;
+// Set svg container width
 var containerWidth = 478;
+// Set svg container height
 var containerHeight = 430;
+// Set circle x,y origin to the center of the svg container
 var cx = containerWidth/2;
 var cy = containerHeight/2;
+
+// store current radius for reference to smoothly animate redraw
 var currentRadius = 0;
+
+/*
+  scaleFactor is multiplied by the value from the server to make
+  the new radius
+*/
 var scaleFactor = 20;
+
+// Initialize svg container
 
 var svgContainer = d3.select( 'body' )
   .append( 'svg' )
   .attr( 'width', containerWidth )
   .attr( 'height', containerHeight );
 
+// Draw the initial circle
 drawCircle( data );
 
+// Replace circle when data is received from server
 socket.on( 'data', function( buttonValue ){
   console.log( buttonValue );
   // toggleCircle( buttonValue );
   replaceCircle( buttonValue );
 });
 
-function updateData( value ) {
-  console.log( 'updating data' );
-  data.push( value );
-}
-
+// Remove the circle
 function removeCircle(){
   var circles = svgContainer.selectAll( 'circle' );
   myCircle = circles[ 0 ][ 0 ];
@@ -49,6 +59,8 @@ function removeCircle(){
   toRemove.remove();
   console.log( 'Removing: ' + toRemove );
 }
+
+// Draw the circle. Radius is linked to data from server.
 function drawCircle( data ){
   console.log( 'current radius: ' + currentRadius );
   var circles = svgContainer.selectAll( 'circle' )
@@ -66,16 +78,11 @@ function drawCircle( data ){
   console.log('drawing circle');  
 }
 
-function toggleCircle( buttonValue ){
-  console.log( counter % 2 );
-  if( counter % 2 === 0 ){
-    drawCircle( [ buttonValue ] );
-  } else {
-    removeCircle();
-  }
-  counter++;  
-}
-
+/*
+  Replace circle. Waits for current circle to be removed using a promise,
+  then draws an updated one.
+*/
+  
 function replaceCircle( buttonValue ){
   var promise = new Promise( function( resolve, reject ){
     removeCircle();
