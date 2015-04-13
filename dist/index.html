@@ -51,11 +51,15 @@ socket.on( 'data', function( buttonValue ){
 
 // Remove the circle
 function removeCircle(){
+  // select the circles in the container
   var circles = svgContainer.selectAll( 'circle' );
+  // identify the DOM element of the first circle
   myCircle = circles[ 0 ][ 0 ];
   console.dir( myCircle );
+  // d3 select the circle
   var toRemove = d3.select( myCircle );
   console.dir( toRemove );
+  // remove the circle
   toRemove.remove();
   console.log( 'Removing: ' + toRemove );
 }
@@ -63,25 +67,40 @@ function removeCircle(){
 // Draw the circle. Radius is linked to data from server.
 function drawCircle( data ){
   console.log( 'current radius: ' + currentRadius );
+  // This is unintuitive, but the first step of creating the
+  // circle is to make a declaration of intent to add circles
+  // ...
   var circles = svgContainer.selectAll( 'circle' )
+  // Then, add the data to the declaration  
     .data( data )
+  // Then, compile the data and circle declaration into an object  
     .enter()
+  // Then, append it to the DOM  
     .append( 'circle' )
+  // with this center x  
       .attr( 'cx' , cx )
+  // and this center y     
       .attr( 'cy' , cy )
+  // and the old ending radius    
       .attr( 'r', currentRadius)
-    .transition()
-    .duration(160)
+  // And take 160 ms to transition to the new radius    
+      .transition()
+      .duration( 160 )
+  // Define the new radius by passing in the data 
+  // from .data() above as d to the following
+  // function declaration and multiplying it by
+  // the scale factor
       .attr( 'r' , function(d){ 
         currentRadius = scaleFactor * d; 
-        return scaleFactor * d } );
+        return scaleFactor * d 
+       });
   console.log('drawing circle');  
 }
 
 /*
-  Replace circle. Waits for current circle to be removed using a promise,
-  then draws an updated one.
-*/
+ *  Replace circle. This function waits for current circle to be removed using a promise,
+ *  then draws an updated one.
+ */
   
 function replaceCircle( buttonValue ){
   var promise = new Promise( function( resolve, reject ){
